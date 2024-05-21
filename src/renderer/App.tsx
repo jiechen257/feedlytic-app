@@ -1,6 +1,11 @@
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import icon from '../../assets/icon.svg';
 import './App.css';
+import 'tailwindcss/tailwind.css';
+
+function Demo() {
+  return <div className="flex bg-gray-800 text-xl font-bold">jiechen</div>;
+}
 
 function Hello() {
   return (
@@ -43,7 +48,8 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Hello />} />
+        <Route path="/demo" element={<Hello />} />
+        <Route path="/" element={<Demo />} />
       </Routes>
     </Router>
   );
