@@ -1,56 +1,26 @@
-import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import icon from '../../assets/icon.svg';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
 import './App.css';
 import 'tailwindcss/tailwind.css';
+import Hello from '../pages/Hello';
+import ButtonDemo from '../components/button-demo';
+// <Router>
+//   <Routes>
+//     <Route path="/demo" element={<Hello />} />
+//     <Route path="/" element={<ButtonDemo />} />
+//   </Routes>
+// </Router>
 
-function Demo() {
-  return <div className="flex bg-gray-800 text-xl font-bold">jiechen</div>;
-}
-
-function Hello() {
-  return (
-    <div>
-      <div className="Hello">
-        <img width="200" alt="icon" src={icon} />
-      </div>
-      <h1>electron-react-boilerplate</h1>
-      <div className="Hello">
-        <a
-          href="https://electron-react-boilerplate.js.org/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="books">
-              📚
-            </span>
-            Read our docs
-          </button>
-        </a>
-        <a
-          href="https://github.com/sponsors/electron-react-boilerplate"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="folded hands">
-              🙏
-            </span>
-            Donate
-          </button>
-        </a>
-      </div>
-    </div>
-  );
-}
-
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Hello />,
+  },
+  {
+    path: 'demo',
+    element: <ButtonDemo />,
+  },
+]);
 export default function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/demo" element={<Hello />} />
-        <Route path="/" element={<Demo />} />
-      </Routes>
-    </Router>
-  );
+  return <RouterProvider router={router} />;
 }
