@@ -1,5 +1,5 @@
 import { Button } from 'antd';
-import { Link, useBeforeUnload } from 'react-router-dom';
+import { Link, useBeforeUnload, useNavigate } from 'react-router-dom';
 import React from 'react';
 import { useBearStore } from '../store';
 
@@ -8,11 +8,21 @@ function ButtonDemo() {
   const increasePopulation = useBearStore((state) => state.increasePopulation);
   const removeAllBears = useBearStore((state) => state.removeAllBears);
 
-  // useBeforeUnload(
-  //   React.useCallback(() => {
-  //     window.electron.store.set('bears', bears);
-  //   }, [bears]),
-  // );
+  const navigate = useNavigate();
+
+  const handleBeforeNavigate = (callback: Function) => {
+    // Your callback function logic here
+    window.electron.store.set('bears', bears);
+    console.log('Callback function executed');
+    removeAllBears();
+    callback();
+  };
+
+  const handleNavigation = (path: string) => {
+    handleBeforeNavigate(() => {
+      navigate(path);
+    });
+  };
 
   return (
     <div className="flex flex-col">
@@ -29,9 +39,15 @@ function ButtonDemo() {
         </Button>
         <Button onClick={removeAllBears}>remove all</Button>
       </div>
-      <Link className="my-4" to="/">
+      {/* <Link className="my-4" to="/"> */}
+      {/* </Link> */}
+      <Button
+        type="link"
+        className="mt-4"
+        onClick={() => handleNavigation('/')}
+      >
         to home
-      </Link>
+      </Button>
     </div>
   );
 }

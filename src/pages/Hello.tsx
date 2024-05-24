@@ -1,5 +1,6 @@
 // import EStore from 'electron-store';
 import { Link } from 'react-router-dom';
+import { Button } from 'antd';
 import icon from '../../assets/icon.svg';
 
 function Hello() {
@@ -10,7 +11,9 @@ function Hello() {
       </div>
       <h1>electron-react-boilerplate</h1>
       <div className="my-4">
-        <Link to="/demo">to buttonDemo</Link>
+        <Link to="/demo">
+          <Button type="link">to buttonDemo</Button>
+        </Link>
       </div>
       <div className="Hello">
         <a
