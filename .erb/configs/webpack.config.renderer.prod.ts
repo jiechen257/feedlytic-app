@@ -71,6 +71,16 @@ const configuration: webpack.Configuration = {
         ],
         exclude: /\.module\.s?(c|a)ss$/,
       },
+      // less
+      {
+        test: /\.less$/i,
+        use: [
+          // compiles Less to CSS
+          'style-loader',
+          'css-loader',
+          'less-loader',
+        ],
+      },
       // Fonts
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,

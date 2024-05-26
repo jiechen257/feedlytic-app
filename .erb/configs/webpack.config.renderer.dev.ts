@@ -23,6 +23,9 @@ const skipDLLs =
   module.parent?.filename.includes('webpack.config.renderer.dev.dll') ||
   module.parent?.filename.includes('webpack.config.eslint');
 
+const lessRegex = /\.less$/;
+const lessModuleRegex = /\.module\.less$/;
+
 /**
  * Warn if the DLL is not built
  */
@@ -94,6 +97,16 @@ const configuration: webpack.Configuration = {
           },
         ],
         exclude: /\.module\.s?(c|a)ss$/,
+      },
+      // less
+      {
+        test: /\.less$/i,
+        use: [
+          // compiles Less to CSS
+          'style-loader',
+          'css-loader',
+          'less-loader',
+        ],
       },
       // Fonts
       {

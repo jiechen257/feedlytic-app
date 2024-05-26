@@ -1,5 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import App from './App';
+import '../locales/i18n';
+import '../styles/reset.less';
 
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);

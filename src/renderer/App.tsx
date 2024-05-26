@@ -1,21 +1,20 @@
-import { createHashRouter, RouterProvider } from 'react-router-dom';
+import { RouterProvider } from 'react-router-dom';
 
 import './App.css';
 import 'tailwindcss/tailwind.css';
-import Hello from '../pages/Hello';
-import ButtonDemo from '../components/button-demo';
+import { ConfigProvider } from 'antd';
+import { defaultTheme } from '../config/theme';
+import RootRouter from '../routers';
 
-const router = createHashRouter([
-  {
-    path: '/',
-    element: <Hello />,
-  },
-  {
-    path: 'demo',
-    element: <ButtonDemo />,
-  },
-]);
 export default function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <ConfigProvider
+      theme={{
+        token: defaultTheme,
+      }}
+    >
+      <RouterProvider router={RootRouter} />
+    </ConfigProvider>
+  );
   // return <div className="bg-gray-600">jiechen</div>;
 }

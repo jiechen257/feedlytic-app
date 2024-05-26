@@ -1,6 +1,6 @@
-import { Button } from 'antd';
-import { Link, useBeforeUnload, useNavigate } from 'react-router-dom';
-import React from 'react';
+import { Button, Switch } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useBearStore } from '../store';
 
 function ButtonDemo() {
@@ -10,10 +10,11 @@ function ButtonDemo() {
 
   const navigate = useNavigate();
 
+  const { t, i18n } = useTranslation();
+
   const handleBeforeNavigate = (callback: Function) => {
     // Your callback function logic here
     window.electron.store.set('bears', bears);
-    console.log('Callback function executed');
     removeAllBears();
     callback();
   };
@@ -23,6 +24,12 @@ function ButtonDemo() {
       navigate(path);
     });
   };
+  const switchLanguage = (val: boolean) => {
+    i18n.changeLanguage(val ? 'zh' : 'en');
+    console.log('change language');
+  };
+
+  console.log('i18-jie', i18n.languages);
 
   return (
     <div className="flex flex-col">
@@ -33,11 +40,14 @@ function ButtonDemo() {
       <div className="flex justify-center items-center my-4 bg-gray-800 text-xl font-bold rounded">
         electron-store: {window.electron.store.get('bears')}
       </div>
+      <div className="my-4">
+        <Switch defaultChecked onChange={switchLanguage} />
+      </div>
       <div className="flex mt-4">
-        <Button onClick={increasePopulation} className="mr-4">
-          Increment
+        <Button type="primary" onClick={increasePopulation} className="mr-4">
+          {t('Increment')}
         </Button>
-        <Button onClick={removeAllBears}>remove all</Button>
+        <Button onClick={removeAllBears}>{t('Remove All')}</Button>
       </div>
       {/* <Link className="my-4" to="/"> */}
       {/* </Link> */}
