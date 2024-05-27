@@ -1,6 +1,5 @@
 import { RouterProvider } from 'react-router-dom';
 
-import './App.css';
 import 'tailwindcss/tailwind.css';
 import { ConfigProvider } from 'antd';
 import { defaultTheme } from '../config/theme';

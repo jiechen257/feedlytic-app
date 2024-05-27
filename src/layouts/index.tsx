@@ -1,44 +1,66 @@
-import { Outlet } from 'react-router-dom';
-import { Layout } from 'antd';
-import LayoutHeader from './components/Header';
-import LayoutMenu from './components/Menu';
+import React from 'react';
+import {
+  UploadOutlined,
+  UserOutlined,
+  VideoCameraOutlined,
+} from '@ant-design/icons';
+import { Layout, Menu, theme } from 'antd';
 import './index.less';
+import LayoutMenu from './components/Menu';
+import LayoutHeader from './components/Header';
+import LayoutFooter from './components/Footer';
 
-function LayoutIndex(props: any) {
-  const { Sider, Content } = Layout;
-  // const { isCollapse, updateCollapse } = props;
-  const isCollapse = true;
+const { Header, Content, Footer, Sider } = Layout;
 
-  // 监听窗口大小变化
-  // const listeningWindow = () => {
-  //   window.onresize = () => {
-  //     return (() => {
-  //       const screenWidth = document.body.clientWidth;
-  //       if (!isCollapse && screenWidth < 1200) updateCollapse(true);
-  //       if (!isCollapse && screenWidth > 1200) updateCollapse(false);
-  //     })();
-  //   };
-  // };
+const items = [
+  UserOutlined,
+  VideoCameraOutlined,
+  UploadOutlined,
+  UserOutlined,
+].map((icon, index) => ({
+  key: String(index + 1),
+  icon: React.createElement(icon),
+  label: `nav ${index + 1}`,
+}));
 
-  // useEffect(() => {
-  //   listeningWindow();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+const App: React.FC = () => {
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
 
   return (
-    // 这里不用 Layout 组件原因是切换页面时样式会先错乱然后在正常显示，造成页面闪屏效果
-    <section className="container">
-      <Sider trigger={null} collapsed={isCollapse} width={220} theme="dark">
-        <LayoutMenu />
+    <Layout className='container'>
+      <Sider
+        breakpoint="lg"
+        width={256}
+        collapsedWidth="0"
+        onBreakpoint={(broken) => {
+          console.log(broken);
+        }}
+        onCollapse={(collapsed, type) => {
+          console.log(collapsed, type);
+        }}
+      >
+        <LayoutMenu></LayoutMenu>
       </Sider>
       <Layout>
-        <LayoutHeader />
-        <Content>
-          <Outlet />
+        <LayoutHeader></LayoutHeader>
+        <Content style={{ margin: '24px 16px 0' }}>
+          <div
+            style={{
+              padding: 24,
+              minHeight: 360,
+              background: colorBgContainer,
+              borderRadius: borderRadiusLG,
+            }}
+          >
+            content
+          </div>
         </Content>
+        <LayoutFooter />
       </Layout>
-    </section>
+    </Layout>
   );
-}
+};
 
-export default LayoutIndex;
+export default App;

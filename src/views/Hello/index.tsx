@@ -1,11 +1,12 @@
 // import EStore from 'electron-store';
 import { Link } from 'react-router-dom';
 import { Button } from 'antd';
-import icon from '../../assets/icon.svg';
+import icon from '../../../assets/icon.png';
+import './index.less';
 
 function Hello() {
   return (
-    <div>
+    <div className="hello-container">
       <div className="Hello">
         <img width="200" alt="icon" src={icon} />
       </div>
