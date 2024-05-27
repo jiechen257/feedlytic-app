@@ -1,35 +1,19 @@
 import React from 'react';
-import {
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from '@ant-design/icons';
-import { Layout, Menu, theme } from 'antd';
+import { Layout, theme } from 'antd';
 import './index.less';
 import LayoutMenu from './components/Menu';
 import LayoutHeader from './components/Header';
 import LayoutFooter from './components/Footer';
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Sider } = Layout;
 
-const items = [
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  UserOutlined,
-].map((icon, index) => ({
-  key: String(index + 1),
-  icon: React.createElement(icon),
-  label: `nav ${index + 1}`,
-}));
-
-const App: React.FC = () => {
+const App = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
   return (
-    <Layout className='container'>
+    <Layout className="container">
       <Sider
         breakpoint="lg"
         width={256}
@@ -41,10 +25,10 @@ const App: React.FC = () => {
           console.log(collapsed, type);
         }}
       >
-        <LayoutMenu></LayoutMenu>
+        <LayoutMenu />
       </Sider>
       <Layout>
-        <LayoutHeader></LayoutHeader>
+        <LayoutHeader />
         <Content style={{ margin: '24px 16px 0' }}>
           <div
             style={{

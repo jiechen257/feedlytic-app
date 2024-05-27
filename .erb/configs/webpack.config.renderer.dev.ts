@@ -23,9 +23,6 @@ const skipDLLs =
   module.parent?.filename.includes('webpack.config.renderer.dev.dll') ||
   module.parent?.filename.includes('webpack.config.eslint');
 
-const lessRegex = /\.less$/;
-const lessModuleRegex = /\.module\.less$/;
-
 /**
  * Warn if the DLL is not built
  */

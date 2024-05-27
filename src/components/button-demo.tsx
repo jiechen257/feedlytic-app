@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useBearStore } from '../store';
 
-function ButtonDemo() {
+const ButtonDemo = () => {
   const bears = useBearStore((state) => state.bears);
   const increasePopulation = useBearStore((state) => state.increasePopulation);
   const removeAllBears = useBearStore((state) => state.removeAllBears);
@@ -60,6 +60,6 @@ function ButtonDemo() {
       </Button>
     </div>
   );
-}
+};
 
 export default ButtonDemo;

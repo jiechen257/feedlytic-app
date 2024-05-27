@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { HOME_URL } from '../../config';
 import './index.less';
 
-function NotFound() {
+const NotFound = () => {
   const navigate = useNavigate();
   const goHome = () => {
     navigate(HOME_URL);
@@ -20,6 +20,6 @@ function NotFound() {
       }
     />
   );
-}
+};
 
 export default NotFound;

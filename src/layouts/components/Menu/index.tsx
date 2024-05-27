@@ -1,10 +1,6 @@
-import React from 'react';
 import {
-  AppstoreOutlined,
-  MailOutlined,
   SettingOutlined,
   BookOutlined,
-  StarOutlined,
   SisternodeOutlined,
   CarryOutOutlined,
   FieldTimeOutlined,
@@ -77,14 +73,14 @@ const bottomItems: MenuItem[] = [
   },
 ];
 
-function LayoutMenu() {
+const LayoutMenu = () => {
   const onClick: MenuProps['onClick'] = (e) => {
     console.log('click ', e);
   };
 
   return (
     <aside className="relative min-h-[100vh] custom bg-white">
-      <div className="flex justify-center items-center py-4 width-[100%] font-bold text-xl" >
+      <div className="flex justify-center items-center py-4 width-[100%] font-bold text-xl">
         Feedlytic Reader
       </div>
       <Menu
@@ -107,6 +103,6 @@ function LayoutMenu() {
       />
     </aside>
   );
-}
+};
 
 export default LayoutMenu;

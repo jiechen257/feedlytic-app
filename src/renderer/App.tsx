@@ -5,7 +5,7 @@ import { ConfigProvider } from 'antd';
 import { defaultTheme } from '../config/theme';
 import RootRouter from '../routers';
 
-export default function App() {
+const App = () => {
   return (
     <ConfigProvider
       theme={{
@@ -15,5 +15,6 @@ export default function App() {
       <RouterProvider router={RootRouter} />
     </ConfigProvider>
   );
-  // return <div className="bg-gray-600">jiechen</div>;
-}
+};
+
+export default App;
