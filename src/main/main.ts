@@ -15,7 +15,6 @@ import log from 'electron-log';
 import Store from 'electron-store';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-// import '../styles/global.css';
 
 const store = new Store();
 

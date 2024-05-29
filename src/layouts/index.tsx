@@ -13,7 +13,7 @@ const App = () => {
   } = theme.useToken();
 
   return (
-    <Layout className="container">
+    <Layout className="main">
       <Sider
         breakpoint="lg"
         width={256}
@@ -27,7 +27,7 @@ const App = () => {
       >
         <LayoutMenu />
       </Sider>
-      <Layout>
+      <Layout className="bg-[#eee]">
         <LayoutHeader />
         <Content style={{ margin: '24px 16px 0' }}>
           <div

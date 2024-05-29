@@ -1,7 +1,7 @@
 import { createHashRouter, Navigate } from 'react-router-dom';
-import PageContent from '../views/pageContent';
-import Hello from '../views/Hello';
-import LayoutIndex from '../layouts';
+import PageContent from '../pages/pageContent';
+import Hello from '@/pages/Hello';
+import LayoutIndex from '@/layouts';
 
 export const Router = createHashRouter([
   {

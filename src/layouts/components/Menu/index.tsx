@@ -10,6 +10,8 @@ import {
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 import './index.less';
+import SourceModal from '../../../components/SourceModal';
+import { useMenuAction } from './useMenu';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -74,17 +76,15 @@ const bottomItems: MenuItem[] = [
 ];
 
 const LayoutMenu = () => {
-  const onClick: MenuProps['onClick'] = (e) => {
-    console.log('click ', e);
-  };
-
+  const { sourceOpen, closeSourceModal, clickMenu, addSource } =
+    useMenuAction();
   return (
-    <aside className="relative min-h-[100vh] custom bg-white">
+    <aside className="relative min-h-[100vh] custom bg-white font-bold">
       <div className="flex justify-center items-center py-4 width-[100%] font-bold text-xl">
         Feedlytic Reader
       </div>
       <Menu
-        onClick={onClick}
+        onClick={clickMenu}
         style={{ width: 256 }}
         defaultSelectedKeys={['1']}
         defaultOpenKeys={['sub1']}
@@ -94,12 +94,17 @@ const LayoutMenu = () => {
 
       <Menu
         className="absolute bottom-0 left-0"
-        onClick={onClick}
+        onClick={clickMenu}
         style={{ width: 256 }}
         defaultSelectedKeys={['1']}
         defaultOpenKeys={['sub1']}
         mode="inline"
         items={bottomItems}
+      />
+      <SourceModal
+        modalOpen={sourceOpen}
+        closeModal={closeSourceModal}
+        addSource={addSource}
       />
     </aside>
   );
