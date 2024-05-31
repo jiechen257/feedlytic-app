@@ -1,7 +1,7 @@
 import { Button, Switch } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useBearStore } from '../store';
+import { useBearStore } from '../stores';
 
 const ButtonDemo = () => {
   const bears = useBearStore((state) => state.bears);

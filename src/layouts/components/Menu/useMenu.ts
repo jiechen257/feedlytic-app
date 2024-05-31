@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { MenuProps } from 'antd';
+import { addSource as addSourceHandler } from '@/stores/model/sourceModel';
 
 export const MenuMap = {};
 
@@ -14,9 +15,6 @@ export const useMenuAction = () => {
     setModalOpen(false);
   };
 
-  const addSource = (inputUrl: string) => {
-    console.log('inputUrl', inputUrl);
-  };
   const clickMenu: MenuProps['onClick'] = (e) => {
     console.log('click ', e);
     switch (e.key) {
@@ -29,7 +27,6 @@ export const useMenuAction = () => {
   };
   return {
     sourceOpen,
-    addSource,
     clickMenu,
     openSourceModal,
     closeSourceModal,

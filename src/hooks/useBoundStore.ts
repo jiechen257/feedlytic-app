@@ -1,6 +1,6 @@
-import { StateCreator } from 'zustand';
-import { createAppSlice } from '@/store/model/app';
-import type { AppSlice } from '@/store/model/app';
+import { create, StateCreator } from 'zustand';
+import { createAppSlice } from '@/stores/app';
+import type { AppSlice } from '@/stores/app';
 
 type BoundState = AppSlice;
 

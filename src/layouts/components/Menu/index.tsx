@@ -101,11 +101,7 @@ const LayoutMenu = () => {
         mode="inline"
         items={bottomItems}
       />
-      <SourceModal
-        modalOpen={sourceOpen}
-        closeModal={closeSourceModal}
-        addSource={addSource}
-      />
+      <SourceModal modalOpen={sourceOpen} closeModal={closeSourceModal} />
     </aside>
   );
 };

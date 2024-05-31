@@ -117,6 +117,24 @@ const createWindow = async () => {
     return { action: 'deny' };
   });
 
+  // CORS handler
+  mainWindow.webContents.session.webRequest.onBeforeSendHeaders(
+    (details, callback) => {
+      callback({ requestHeaders: { Origin: '*', ...details.requestHeaders } });
+    },
+  );
+
+  mainWindow.webContents.session.webRequest.onHeadersReceived(
+    (details, callback) => {
+      callback({
+        responseHeaders: {
+          'Access-Control-Allow-Origin': ['*'],
+          ...details.responseHeaders,
+        },
+      });
+    },
+  );
+
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
   new AppUpdater();

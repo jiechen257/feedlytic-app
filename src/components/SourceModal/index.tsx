@@ -17,11 +17,12 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import type { ColumnsType } from 'antd/es/table';
+import { useBoundStore } from '@/hooks/useBoundStore';
+import { addSource } from '@/stores/model/sourceModel';
 
 interface ModalProps {
   modalOpen: boolean;
   closeModal: () => void;
-  addSource: (inputUrl: string) => void;
 }
 
 interface DataType {
@@ -84,12 +85,16 @@ const Row = (props: RowProps) => {
 };
 
 const SourceModal = (props: ModalProps) => {
-  const { modalOpen, closeModal, addSource } = props;
+  const { modalOpen, closeModal } = props;
+  const sourceInit = useBoundStore((state) => state.sourceInit);
+  const setSourceInit = useBoundStore((state) => state.setSourceInit);
 
   const [form] = Form.useForm();
-
   const onFinish = (values: { inputUrl: string }) => {
-    addSource(values.inputUrl);
+    addSource(values.inputUrl, '', {
+      sourceInit,
+      setSourceInit,
+    });
     message.success(`Submit success! ${values}`);
   };
 
