@@ -10,6 +10,8 @@ import {
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 import './index.less';
+import { useBoundStore } from '@/hooks/useBoundStore';
+import { useEffect, useState } from 'react';
 import SourceModal from '../../../components/SourceModal';
 import { useMenuAction } from './useMenu';
 
@@ -39,28 +41,29 @@ const topItems: MenuItem[] = [
   {
     type: 'divider',
   },
-  {
-    key: 'sub4',
-    label: 'FEEDS',
-    type: 'group',
-    children: [
-      { key: '9', label: 'Option 9' },
-      {
-        key: '10',
-        label: 'Option 10',
-        children: [
-          { key: '11', label: 'Option 11' },
-          { key: '12', label: 'Option 12' },
-        ],
-      },
-    ],
-  },
-  {
-    key: 'create',
-    label: 'Create New Folder',
-    icon: <SisternodeOutlined />,
-  },
+  // {
+  //   key: 'sub4',
+  //   label: 'FEEDS',
+  //   type: 'group',
+  //   children: [
+  //     { key: '9', label: 'Option 9' },
+  //     {
+  //       key: '10',
+  //       label: 'Option 10',
+  //       children: [
+  //         { key: '11', label: 'Option 11' },
+  //         { key: '12', label: 'Option 12' },
+  //       ],
+  //     },
+  //   ],
+  // },
 ];
+
+const creatorMenuItem = {
+  key: 'create',
+  label: 'Create New Folder',
+  icon: <SisternodeOutlined />,
+};
 
 const bottomItems: MenuItem[] = [
   {
@@ -75,9 +78,25 @@ const bottomItems: MenuItem[] = [
   },
 ];
 
+const getIcon = (url: string) => {
+  return <img className="w-[24px] h-[24px]" src={url} alt="" />;
+};
+
 const LayoutMenu = () => {
-  const { sourceOpen, closeSourceModal, clickMenu, addSource } =
-    useMenuAction();
+  const { sourceOpen, closeSourceModal, clickMenu } = useMenuAction();
+  const menu = useBoundStore((s) => s.menu);
+  const [menuItems, setMenuItems] = useState([...topItems, creatorMenuItem]);
+  useEffect(() => {
+    const formatMenu =
+      menu?.map((v: any) => ({ ...v, icon: getIcon(v.logo) })) || [];
+    // eslint-disable-next-line no-sparse-arrays
+    // const formatMenu = menu;
+    if (formatMenu.length) {
+      const currentMenuItems = [...topItems, , ...formatMenu, creatorMenuItem];
+      setMenuItems(currentMenuItems);
+    }
+  }, [menu]);
+  // const sourceMenu = subscribeWithSelector(useBoundStore, (s) => s.menu);
   return (
     <aside className="relative min-h-[100vh] custom bg-white font-bold">
       <div className="flex justify-center items-center py-4 width-[100%] font-bold text-xl">
@@ -89,7 +108,7 @@ const LayoutMenu = () => {
         defaultSelectedKeys={['1']}
         defaultOpenKeys={['sub1']}
         mode="inline"
-        items={topItems}
+        items={menuItems}
       />
 
       <Menu
@@ -101,7 +120,11 @@ const LayoutMenu = () => {
         mode="inline"
         items={bottomItems}
       />
-      <SourceModal modalOpen={sourceOpen} closeModal={closeSourceModal} />
+      <SourceModal
+        modalOpen={sourceOpen}
+        closeModal={closeSourceModal}
+        finishSourceAdd={() => console.log('11')}
+      />
     </aside>
   );
 };

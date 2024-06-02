@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Form, Input, message, Modal, Space, Table } from 'antd';
 import type { DragEndEvent } from '@dnd-kit/core';
 import {
@@ -18,32 +18,39 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import type { ColumnsType } from 'antd/es/table';
 import { useBoundStore } from '@/hooks/useBoundStore';
-import { addSource } from '@/stores/model/sourceModel';
 
 interface ModalProps {
   modalOpen: boolean;
   closeModal: () => void;
+  finishSourceAdd: () => void;
 }
 
 interface DataType {
   key: string;
   name: string;
-  age: number;
-  address: string;
+  icon: number;
+  url: string;
 }
 
 const columns: ColumnsType<DataType> = [
+  {
+    title: 'Icon',
+    dataIndex: 'icon',
+    render: (text) => (
+      <img
+        src={text}
+        alt="icon"
+        className="po-ab w-[24px] h-[24px] mt-1 ml-1"
+      />
+    ),
+  },
   {
     title: 'Name',
     dataIndex: 'name',
   },
   {
-    title: 'Age',
-    dataIndex: 'age',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
+    title: 'Url',
+    dataIndex: 'url',
   },
 ];
 
@@ -85,43 +92,13 @@ const Row = (props: RowProps) => {
 };
 
 const SourceModal = (props: ModalProps) => {
-  const { modalOpen, closeModal } = props;
-  const sourceInit = useBoundStore((state) => state.sourceInit);
-  const setSourceInit = useBoundStore((state) => state.setSourceInit);
+  const { modalOpen, closeModal, finishSourceAdd } = props;
+  const addSource = useBoundStore((state) => state.addSource);
+  const menu = useBoundStore((s) => s.menu);
 
   const [form] = Form.useForm();
-  const onFinish = (values: { inputUrl: string }) => {
-    addSource(values.inputUrl, '', {
-      sourceInit,
-      setSourceInit,
-    });
-    message.success(`Submit success! ${values}`);
-  };
 
-  const onFinishFailed = () => {
-    message.error('Submit failed!');
-  };
-
-  const [dataSource, setDataSource] = useState([
-    {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'ngtext Loong text Long text Long text Long text Long text',
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-    },
-  ]);
+  const [dataSource, setDataSource] = useState([]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -131,6 +108,25 @@ const SourceModal = (props: ModalProps) => {
       },
     }),
   );
+  useEffect(() => {
+    const formData = menu.map((v) => ({
+      name: v.label,
+      icon: v.logo,
+      url: v.key,
+      key: v.key,
+    }));
+    setDataSource(formData as any);
+  }, [menu]);
+
+  const onFinish = async (values: { inputUrl: string }) => {
+    await addSource(values.inputUrl, '');
+    message.success(`Submit success! ${values}`);
+    finishSourceAdd();
+  };
+
+  const onFinishFailed = () => {
+    message.error('Submit failed!');
+  };
 
   const onDragEnd = ({ active, over }: DragEndEvent) => {
     if (active.id !== over?.id) {

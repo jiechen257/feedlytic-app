@@ -1,5 +1,5 @@
-import EStore from 'electron-store';
+const ESStore = () => {
+  return window.electron.store;
+};
 
-const store = new EStore();
-
-export default store;
+export default ESStore;

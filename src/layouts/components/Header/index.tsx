@@ -8,9 +8,7 @@ import {
   FilterOutlined,
 } from '@ant-design/icons';
 
-const onChange = (key: string) => {
-  console.log(key);
-};
+const onChange = (key: string) => {};
 
 type Align = 'start' | 'center' | 'end';
 

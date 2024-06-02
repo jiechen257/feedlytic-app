@@ -1,5 +1,6 @@
 /* eslint-disable no-plusplus */
 import { extractFromXml, FeedData } from '@extractus/feed-extractor';
+import Url from 'url';
 
 export enum ActionStatus {
   Request,
@@ -7,45 +8,58 @@ export enum ActionStatus {
   Failure,
   Intermediate,
 }
-
 export const domParser = new DOMParser();
 
-// eslint-disable-next-line no-useless-escape
-const CHARSET_RE = /charset=([^()<>@,;:\"/[\]?.=\s]*)/i;
-const XML_ENCODING_RE = /^<\?xml.+encoding="(.+?)".*?\?>/i;
-
-export async function decodeFetchResponse(response: Response, isHTML = false) {
-  const buffer = await response.arrayBuffer();
-  let ctype =
-    response.headers.has('content-type') &&
-    response.headers.get('content-type');
-  let charset =
-    ctype && CHARSET_RE.test(ctype) ? CHARSET_RE.exec(ctype)?.[1] : undefined;
-  let content = new TextDecoder(charset).decode(buffer);
-  if (charset === undefined) {
-    if (isHTML) {
-      const dom = domParser.parseFromString(content, 'text/html');
-      charset = dom
-        .querySelector('meta[charset]')
-        ?.getAttribute('charset')
-        ?.toLowerCase();
-      if (!charset) {
-        ctype = dom
-          .querySelector("meta[http-equiv='Content-Type']")
-          ?.getAttribute('content') as any;
-        charset = (ctype &&
-          CHARSET_RE.test(ctype) &&
-          CHARSET_RE.exec(ctype)?.[1].toLowerCase()) as any;
-      }
-    } else {
-      charset = (XML_ENCODING_RE.test(content) &&
-        XML_ENCODING_RE.exec(content)?.[1].toLowerCase()) as any;
+export async function validateFavicon(url: string) {
+  let flag = false;
+  try {
+    const result = await fetch(url, { credentials: 'omit' });
+    if (
+      result.status === 200 &&
+      result.headers.has('Content-Type') &&
+      result.headers.get('Content-Type')?.startsWith('image')
+    ) {
+      flag = true;
     }
-    if (charset && charset !== 'utf-8' && charset !== 'utf8') {
-      content = new TextDecoder(charset).decode(buffer);
-    }
+  } finally {
+    // eslint-disable-next-line no-unsafe-finally
+    return flag;
   }
-  return content;
+}
+
+export async function fetchFavicon(url: string) {
+  try {
+    // eslint-disable-next-line no-param-reassign
+    url = url.split('/').slice(0, 3).join('/');
+    const result = await fetch(url, { credentials: 'omit' });
+    if (result.ok) {
+      const html = await result.text();
+      const dom = domParser.parseFromString(html, 'text/html');
+      const links = dom.getElementsByTagName('link');
+      // eslint-disable-next-line no-restricted-syntax
+      for (const link of links) {
+        const rel = link.getAttribute('rel');
+        if (
+          (rel === 'icon' || rel === 'shortcut icon') &&
+          link.hasAttribute('href')
+        ) {
+          const href = link.getAttribute('href');
+          const parsedUrl = Url.parse(url);
+          if (href?.startsWith('//')) return parsedUrl.protocol + href;
+          if (href?.startsWith('/')) return url + href;
+          return href;
+        }
+      }
+    }
+    // eslint-disable-next-line no-param-reassign
+    url += '/favicon.ico';
+    if (await validateFavicon(url)) {
+      return url;
+    }
+    return null;
+  } catch {
+    return null;
+  }
 }
 
 export async function parseRSS(url: string) {

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import type { MenuProps } from 'antd';
-import { addSource as addSourceHandler } from '@/stores/model/sourceModel';
 
 export const MenuMap = {};
 

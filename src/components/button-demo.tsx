@@ -26,10 +26,7 @@ const ButtonDemo = () => {
   };
   const switchLanguage = (val: boolean) => {
     i18n.changeLanguage(val ? 'zh' : 'en');
-    console.log('change language');
   };
-
-  console.log('i18-jie', i18n.languages);
 
   return (
     <div className="flex flex-col">
