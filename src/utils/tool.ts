@@ -133,3 +133,9 @@ export function calculateItemSize(): Promise<number> {
     openRequest.onerror = () => reject();
   });
 }
+
+export function isValidUrl(url: string) {
+  const urlRegex =
+    /^(https?:\/\/)?((([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,})|localhost)(:\d{1,5})?(\/[^\s]*)?$/;
+  return urlRegex.test(url);
+}

@@ -17,6 +17,7 @@ module.exports = {
       2,
       { namedComponents: 'arrow-function' },
     ],
+    'react/jsx-no-useless-fragment': 'off',
   },
   parserOptions: {
     ecmaVersion: 2022,

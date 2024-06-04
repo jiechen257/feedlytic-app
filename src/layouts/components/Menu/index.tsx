@@ -12,6 +12,7 @@ import { Menu } from 'antd';
 import './index.less';
 import { useBoundStore } from '@/hooks/useBoundStore';
 import { useEffect, useState } from 'react';
+import { isValidUrl } from '@/utils/tool';
 import SourceModal from '../../../components/SourceModal';
 import { useMenuAction } from './useMenu';
 
@@ -85,6 +86,7 @@ const getIcon = (url: string) => {
 const LayoutMenu = () => {
   const { sourceOpen, closeSourceModal, clickMenu } = useMenuAction();
   const menu = useBoundStore((s) => s.menu);
+  const setCurrentMenuKey = useBoundStore((s) => s.setCurrentMenuKey);
   const [menuItems, setMenuItems] = useState([...topItems, creatorMenuItem]);
   useEffect(() => {
     const formatMenu =
@@ -96,6 +98,13 @@ const LayoutMenu = () => {
       setMenuItems(currentMenuItems);
     }
   }, [menu]);
+  const handleMenuClick = (val) => {
+    if (isValidUrl(val.key)) {
+      setCurrentMenuKey(val.key);
+      return;
+    }
+    clickMenu(val);
+  };
   // const sourceMenu = subscribeWithSelector(useBoundStore, (s) => s.menu);
   return (
     <aside className="relative min-h-[100vh] custom bg-white font-bold">
@@ -103,7 +112,7 @@ const LayoutMenu = () => {
         Feedlytic Reader
       </div>
       <Menu
-        onClick={clickMenu}
+        onClick={(val) => handleMenuClick(val)}
         style={{ width: 256 }}
         defaultSelectedKeys={['1']}
         defaultOpenKeys={['sub1']}
@@ -113,7 +122,7 @@ const LayoutMenu = () => {
 
       <Menu
         className="absolute bottom-0 left-0"
-        onClick={clickMenu}
+        onClick={(val) => console.log(val)}
         style={{ width: 256 }}
         defaultSelectedKeys={['1']}
         defaultOpenKeys={['sub1']}

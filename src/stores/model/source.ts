@@ -1,7 +1,7 @@
 import { fetchFavicon, parseRSS } from '@/utils/tool';
 import { FeedData } from '@extractus/feed-extractor';
 import { RSSItem } from './item';
-import ESStore from '../electron-store';
+import { getStoreSource, setStoreSource } from '../electron-store';
 
 export class RSSSource {
   sid: number | undefined;
@@ -46,7 +46,7 @@ export class RSSSource {
 
 export function insertSource(source: RSSSource) {
   return new Promise((resolve, reject) => {
-    const sources = ESStore().get('app.sources') || [];
+    const sources = getStoreSource() || [];
     if (sources.length) {
       const sids = Object.values(sources)?.map((s) => s.sid) || -1;
       source.sid = Math.max(...sids, -1) + 1;
@@ -65,7 +65,7 @@ export async function getInsertionSource(url: string, name: string) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const source = new RSSSource(url, name);
   const feed = (await RSSSource.fetchMetaData(source)) as FeedData;
-  source.items = feed.entries || ([] as any);
+  source.items = feed.entries?.map((v) => new RSSItem(v)) || [];
   source.unreadCount = feed.entries?.length;
   source.iconUrl = (await fetchFavicon(url)) as any;
   const inserted = await insertSource(source);
@@ -83,10 +83,7 @@ export async function addSourceHelper(
   if (!sourceInit) {
     throw new Error('Source not initialized');
   }
-  const linkList =
-    ESStore()
-      .get('app.sources')
-      ?.map((v) => v.link) || [];
+  const linkList = getStoreSource()?.map((v) => v.link) || [];
   if (linkList.includes(url)) {
     throw new Error('Source already exists');
   }
@@ -95,6 +92,7 @@ export async function addSourceHelper(
     set({
       sources: [...get().sources, inserted],
     });
+    setStoreSource(get().sources);
     console.log('app.sources', get().sources);
   }
 }

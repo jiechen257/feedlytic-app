@@ -7,13 +7,36 @@ import {
   MessageOutlined,
   FilterOutlined,
 } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
-const onChange = (key: string) => {};
-
-type Align = 'start' | 'center' | 'end';
+const segmentedOptions = [
+  {
+    label: 'Card',
+    value: '/card',
+  },
+  {
+    label: 'List',
+    value: '/list',
+  },
+  {
+    label: 'Magazine',
+    value: '/magazine',
+  },
+  {
+    label: 'Compact',
+    value: '/compact',
+  },
+];
 
 const LayoutHeader = () => {
-  const [alignValue, setAlignValue] = React.useState<Align>('center');
+  const [defaultView, setViewValue] = React.useState<string>(
+    segmentedOptions[1].value,
+  );
+  const navigate = useNavigate();
+  const changeViewHandler = (value: any) => {
+    setViewValue(value);
+    navigate(value);
+  };
   return (
     <div className="flex justify-left items-center pt-4 px-4 text-[#000]">
       <Flex wrap gap="small" className="mr-4">
@@ -31,9 +54,9 @@ const LayoutHeader = () => {
         </Tooltip>
       </Flex>
       <Segmented
-        defaultValue="Card view"
-        onChange={(value) => setAlignValue(value as Align)}
-        options={['Card view', 'List view', 'Magazine view', 'Compact view']}
+        defaultValue={defaultView}
+        onChange={(value) => changeViewHandler(value)}
+        options={segmentedOptions}
       />
     </div>
   );

@@ -1,3 +1,4 @@
+import { setStoreMenu } from '../electron-store';
 import { RSSSource } from './source';
 
 export class Menu {
@@ -30,5 +31,6 @@ export async function addMenuItemHelper(
   await set({
     menu: get().menu.concat(menu),
   });
+  setStoreMenu(get().menu);
   console.log('menu changed', get().menu);
 }

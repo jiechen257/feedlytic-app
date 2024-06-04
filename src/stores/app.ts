@@ -1,7 +1,7 @@
 import type { BoundStateCreator } from '@/hooks/useBoundStore';
 import { addSourceHelper, type RSSSource } from './model/source';
 import { addMenuItemHelper, Menu } from './model/menu';
-import ESStore from './electron-store';
+import { getStoreMenu, getStoreSource } from './electron-store';
 
 export type AppSlice = {
   sourceInit: boolean;
@@ -30,11 +30,12 @@ export const createAppSlice: BoundStateCreator<AppSlice> = (
     fetchingTotal: 0,
   },
   lastFetched: new Date(),
+  currentMenuKey: '',
   menu: [],
   sources: [],
   initApp: async () => {
-    const menu = await ESStore().get('app.menu');
-    const sources = await ESStore().get('app.sources');
+    const menu = getStoreMenu();
+    const sources = getStoreSource();
     set({
       sourceInit: true,
       feedInt: false,
@@ -56,7 +57,13 @@ export const createAppSlice: BoundStateCreator<AppSlice> = (
       '',
     );
   },
-  addMenu: async (source: RSSSource, group: string) => {
+  getSource: (url: string): RSSSource => {
+    return get().sources.find((s) => s.url === url);
+  },
+  addMenu: (source: RSSSource, group: string) => {
     addMenuItemHelper({ set, get }, source, group);
+  },
+  setCurrentMenuKey: (key: string) => {
+    set({ currentMenuKey: key });
   },
 });

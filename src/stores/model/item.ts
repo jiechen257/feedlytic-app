@@ -2,9 +2,7 @@
 import type { FeedEntry } from '@extractus/feed-extractor';
 
 export class RSSItem {
-  // _id: number;
-
-  source: number;
+  id: string;
 
   title: string;
 
@@ -28,16 +26,12 @@ export class RSSItem {
 
   hidden: boolean;
 
-  constructor(item: FeedEntry, source: RSSSource) {
-    for (const field of ['title', 'link', 'creator']) {
-      const content = item[field];
-      if (content && typeof content !== 'string') delete item[field];
-    }
-    this.source = source.sid;
+  constructor(item: FeedEntry) {
+    this.id = item.id;
     this.title = item.title || '未命名';
     this.link = item.link || '';
     this.fetchedDate = new Date();
-    this.date = new Date(item.isoDate ?? item.pubDate ?? this.fetchedDate);
+    this.date = new Date(item?.published);
     this.hasRead = false;
     this.starred = false;
     this.hidden = false;

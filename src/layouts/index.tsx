@@ -1,6 +1,7 @@
 import React from 'react';
 import { Layout, theme } from 'antd';
 import './index.less';
+import { Outlet } from 'react-router-dom';
 import LayoutMenu from './components/Menu';
 import LayoutHeader from './components/Header';
 import LayoutFooter from './components/Footer';
@@ -36,9 +37,10 @@ const App = () => {
               minHeight: 360,
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
+              height: '100%',
             }}
           >
-            content
+            <Outlet />
           </div>
         </Content>
         <LayoutFooter />
