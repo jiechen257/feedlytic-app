@@ -15,7 +15,6 @@ export const useMenuAction = () => {
   };
 
   const clickMenu: MenuProps['onClick'] = (e) => {
-    console.log('click ', e);
     switch (e.key) {
       case 'create':
         openSourceModal();

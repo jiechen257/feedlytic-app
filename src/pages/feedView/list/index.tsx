@@ -4,6 +4,7 @@ import type { TableProps } from 'antd';
 import { useBoundStore } from '@/hooks/useBoundStore';
 import { useLocation, useNavigation } from 'react-router-dom';
 import { CheckCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import ArticleContainer from '@/pages/articleContainer';
 
 const { Paragraph, Text } = Typography;
 
@@ -15,7 +16,7 @@ interface DataType {
   tags: string[];
 }
 
-const getColumns: TableProps<DataType>['columns'] = (ellipsis: boolean) => {
+const getColumns = (ellipsis: boolean) => {
   return [
     {
       title: 'Title',
@@ -78,6 +79,9 @@ const ListView: React.FC = () => {
 
   const [ellipsis, setEllipsis] = useState(true);
 
+  const [currentFeed, setCurrentFeed] = useState();
+  const [articleShow, setShowArticle] = useState(false);
+
   useEffect(() => {
     const feeds = getSource(currentMenuKey)?.items;
     const tableData = feeds?.map((feed) => ({
@@ -86,14 +90,27 @@ const ListView: React.FC = () => {
       ...feed,
     }));
     setFeedsData(tableData);
-    console.log('list---', currentMenuKey, tableData, feedsData);
   }, [location.pathname, currentMenuKey, getSource]);
 
-  useEffect(() => {
-    console.log('Updated feedsData:', feedsData);
-  }, [feedsData]);
+  const clickCurrentRow = (row) => {
+    setCurrentFeed(row);
+    setShowArticle(true);
+  };
 
-  return <Table columns={getColumns(ellipsis)} dataSource={feedsData} />;
+  return (
+    <>
+      <Table
+        onRow={(row) => ({ onClick: () => clickCurrentRow(row) })}
+        columns={getColumns(ellipsis)}
+        dataSource={feedsData}
+      />
+      <ArticleContainer
+        feed={currentFeed}
+        articleShow={articleShow}
+        closeContainer={() => setShowArticle(false)}
+      />
+    </>
+  );
 };
 
 export default ListView;

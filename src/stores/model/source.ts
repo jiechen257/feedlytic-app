@@ -78,7 +78,6 @@ export async function addSourceHelper(
   name: string,
 ) {
   const { set, get } = store;
-  console.log('addSource start', url, name);
   const { sourceInit } = get();
   if (!sourceInit) {
     throw new Error('Source not initialized');

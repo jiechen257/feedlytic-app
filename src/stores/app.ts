@@ -14,7 +14,7 @@ export type AppSlice = {
   lastFetched: Date;
   menu: Menu[];
   sources: RSSSource[];
-  initApp: () => void;
+  initAppStore: () => void;
   addSource: (url: string, name: string) => void;
 };
 
@@ -33,7 +33,7 @@ export const createAppSlice: BoundStateCreator<AppSlice> = (
   currentMenuKey: '',
   menu: [],
   sources: [],
-  initApp: async () => {
+  initAppStore: async () => {
     const menu = getStoreMenu();
     const sources = getStoreSource();
     set({
@@ -48,6 +48,7 @@ export const createAppSlice: BoundStateCreator<AppSlice> = (
       menu,
       sources,
     });
+    console.log('init-app-store', get().sources, get().menu);
   },
   addSource: async (url: string, name: string) => {
     await addSourceHelper({ set, get }, url, name);

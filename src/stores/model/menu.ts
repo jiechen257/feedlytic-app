@@ -32,5 +32,4 @@ export async function addMenuItemHelper(
     menu: get().menu.concat(menu),
   });
   setStoreMenu(get().menu);
-  console.log('menu changed', get().menu);
 }
