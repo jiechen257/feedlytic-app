@@ -20,7 +20,7 @@ export class RSSSource {
 
   textGroup: string;
 
-  hidden: boolean;
+  hiddenStatus: number;
 
   items: Array<RSSItem> | [];
 
@@ -29,7 +29,7 @@ export class RSSSource {
     this.name = name;
     this.lastFetched = new Date();
     this.fetchFrequency = 0;
-    this.hidden = false;
+    this.hiddenStatus = -1;
     this.items = [];
     this.textGroup = '未分类';
   }

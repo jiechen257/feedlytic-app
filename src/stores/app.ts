@@ -1,7 +1,12 @@
 import type { BoundStateCreator } from '@/hooks/useBoundStore';
 import { addSourceHelper, type RSSSource } from './model/source';
 import { addMenuItemHelper, Menu } from './model/menu';
-import { getStoreMenu, getStoreSource } from './electron-store';
+import {
+  getStoreMenu,
+  getStoreSource,
+  setStoreMenu,
+  setStoreSource,
+} from './electron-store';
 
 export type AppSlice = {
   sourceInit: boolean;
@@ -16,6 +21,7 @@ export type AppSlice = {
   sources: RSSSource[];
   initAppStore: () => void;
   addSource: (url: string, name: string) => void;
+  clearAllData: () => void;
 };
 
 export const createAppSlice: BoundStateCreator<AppSlice> = (
@@ -31,6 +37,8 @@ export const createAppSlice: BoundStateCreator<AppSlice> = (
   },
   lastFetched: new Date(),
   currentMenuKey: '',
+  originMenu: [],
+  originSources: [],
   menu: [],
   sources: [],
   initAppStore: async () => {
@@ -45,6 +53,8 @@ export const createAppSlice: BoundStateCreator<AppSlice> = (
         fetchingTotal: 0,
       },
       lastFetched: new Date(),
+      // originMenu: menu,
+      // originSources: sources,
       menu,
       sources,
     });
@@ -57,6 +67,14 @@ export const createAppSlice: BoundStateCreator<AppSlice> = (
       get().sources[get().sources.length - 1],
       '',
     );
+  },
+  clearAllData: async () => {
+    set({
+      menu: [],
+      sources: [],
+    });
+    setStoreMenu([]);
+    setStoreSource([]);
   },
   getSource: (url: string): RSSSource => {
     return get().sources.find((s) => s.url === url);

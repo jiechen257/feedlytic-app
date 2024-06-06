@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Flex, Segmented, Tabs, Tooltip } from 'antd';
 import type { TabsProps } from 'antd';
 import {
@@ -8,6 +8,8 @@ import {
   FilterOutlined,
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import FilterModal from '@/components/FilterModal';
+import useHeaderAction from './useHeader';
 
 const segmentedOptions = [
   {
@@ -29,7 +31,9 @@ const segmentedOptions = [
 ];
 
 const LayoutHeader = () => {
-  const [defaultView, setViewValue] = React.useState<string>(
+  const { filterOpen, closeFilterModal, clickHeader } = useHeaderAction();
+
+  const [defaultView, setViewValue] = useState<string>(
     segmentedOptions[1].value,
   );
   const navigate = useNavigate();
@@ -37,6 +41,7 @@ const LayoutHeader = () => {
     setViewValue(value);
     navigate(value);
   };
+
   return (
     <div className="flex justify-left items-center pt-4 px-4 text-[#000]">
       <Flex wrap gap="small" className="mr-4">
@@ -44,7 +49,11 @@ const LayoutHeader = () => {
           <Button shape="circle" icon={<SearchOutlined />} />
         </Tooltip>
         <Tooltip title="filter">
-          <Button shape="circle" icon={<FilterOutlined />} />
+          <Button
+            shape="circle"
+            onClick={() => clickHeader('filter')}
+            icon={<FilterOutlined />}
+          />
         </Tooltip>
         <Tooltip title="refresh">
           <Button shape="circle" icon={<SyncOutlined />} />
@@ -58,6 +67,7 @@ const LayoutHeader = () => {
         onChange={(value) => changeViewHandler(value)}
         options={segmentedOptions}
       />
+      <FilterModal modalOpen={filterOpen} closeModal={closeFilterModal} />
     </div>
   );
 };

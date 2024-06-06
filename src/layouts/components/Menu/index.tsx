@@ -62,7 +62,7 @@ const topItems: MenuItem[] = [
 
 const creatorMenuItem = {
   key: 'create',
-  label: 'Create New Folder',
+  label: 'Manage Sources',
   icon: <SisternodeOutlined />,
 };
 
@@ -93,10 +93,8 @@ const LayoutMenu = () => {
       menu?.map((v: any) => ({ ...v, icon: getIcon(v.logo) })) || [];
     // eslint-disable-next-line no-sparse-arrays
     // const formatMenu = menu;
-    if (formatMenu.length) {
-      const currentMenuItems = [...topItems, , ...formatMenu, creatorMenuItem];
-      setMenuItems(currentMenuItems);
-    }
+    const currentMenuItems = [...topItems, , ...formatMenu, creatorMenuItem];
+    setMenuItems(currentMenuItems);
   }, [menu]);
   const handleMenuClick = (val) => {
     if (isValidUrl(val.key)) {
@@ -129,11 +127,7 @@ const LayoutMenu = () => {
         mode="inline"
         items={bottomItems}
       />
-      <SourceModal
-        modalOpen={sourceOpen}
-        closeModal={closeSourceModal}
-        finishSourceAdd={() => console.log('11')}
-      />
+      <SourceModal modalOpen={sourceOpen} closeModal={closeSourceModal} />
     </aside>
   );
 };

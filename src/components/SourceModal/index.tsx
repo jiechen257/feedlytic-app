@@ -1,6 +1,15 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Input, message, Modal, Space, Table } from 'antd';
+import {
+  Button,
+  Form,
+  Input,
+  message,
+  Modal,
+  Popconfirm,
+  Space,
+  Table,
+} from 'antd';
 import type { DragEndEvent } from '@dnd-kit/core';
 import {
   DndContext,
@@ -22,7 +31,6 @@ import { useBoundStore } from '@/hooks/useBoundStore';
 interface ModalProps {
   modalOpen: boolean;
   closeModal: () => void;
-  finishSourceAdd: () => void;
 }
 
 interface DataType {
@@ -92,9 +100,10 @@ const Row = (props: RowProps) => {
 };
 
 const SourceModal = (props: ModalProps) => {
-  const { modalOpen, closeModal, finishSourceAdd } = props;
+  const { modalOpen, closeModal } = props;
   const addSource = useBoundStore((state) => state.addSource);
   const menu = useBoundStore((s) => s.menu);
+  const clearAllData = useBoundStore((s) => s.clearAllData);
 
   const [form] = Form.useForm();
 
@@ -121,7 +130,6 @@ const SourceModal = (props: ModalProps) => {
   const onFinish = async (values: { inputUrl: string }) => {
     await addSource(values.inputUrl, '');
     message.success(`Submit success! ${values}`);
-    finishSourceAdd();
   };
 
   const onFinishFailed = () => {
@@ -179,6 +187,19 @@ const SourceModal = (props: ModalProps) => {
                   <Button type="primary" htmlType="submit">
                     添加订阅源
                   </Button>
+                </Space>
+              </Form.Item>
+              <Form.Item>
+                <Space>
+                  <Popconfirm
+                    title="Clear the data"
+                    description="Are you sure to clear all data?"
+                    okText="Yes"
+                    cancelText="No"
+                    onConfirm={clearAllData}
+                  >
+                    <Button danger>清空订阅源</Button>
+                  </Popconfirm>
                 </Space>
               </Form.Item>
             </Form>

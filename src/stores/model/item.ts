@@ -20,11 +20,11 @@ export class RSSItem {
 
   creator?: string;
 
-  hasRead: boolean;
+  readStatus: number;
 
   starred: boolean;
 
-  hidden: boolean;
+  hiddenStatus: number;
 
   constructor(item: FeedEntry) {
     this.id = item.id;
@@ -32,10 +32,23 @@ export class RSSItem {
     this.link = item.link || '';
     this.fetchedDate = new Date();
     this.date = new Date(item?.published);
-    this.hasRead = false;
+    this.readStatus = -1;
     this.starred = false;
-    this.hidden = false;
+    this.hiddenStatus = -1;
   }
 }
 
-export const a = 1;
+export function filterSourcesItems(items: RSSItem[], filter: any) {
+  return items?.filter((v: RSSItem) => {
+    return Object.keys(filter).every((key) => {
+      switch (key) {
+        case 'readStatus':
+          return filter.readStatus === v.readStatus;
+        case 'hiddenStatus':
+          return filter.hiddenStatus === v.hiddenStatus;
+        default:
+          return true;
+      }
+    });
+  });
+}
