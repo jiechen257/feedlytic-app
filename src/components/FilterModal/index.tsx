@@ -2,29 +2,41 @@ import { useBoundStore } from '@/hooks/useBoundStore';
 import { Button, DatePicker, Form, Modal, Radio, Select } from 'antd';
 import React, { useState } from 'react';
 
+const { RangePicker } = DatePicker;
+
 const FilterModal = (props: any) => {
   const { modalOpen, closeModal } = props;
   const [filterOptions, setFilterOptions] = useState<{
     readStatus: number;
     hiddenStatus: number;
+    timeRange?: Date;
   }>({
     readStatus: -1,
     hiddenStatus: -1,
+    timeRange: undefined,
   });
 
   const setFilterOptionsStore = useBoundStore((s) => s.setFilterOptions);
   const changeFilters = (_, values) => {
     const { readStatus, hiddenStatus } = values;
-    setFilterOptions({
+    setFilterOptions((prevOptions) => ({
+      ...prevOptions,
       readStatus,
       hiddenStatus,
-    });
+    }));
+  };
+  const changeTimeRange = (v, dateString) => {
+    setFilterOptions((prevOptions) => ({
+      ...prevOptions,
+      timeRange: dateString.map((time) => new Date(time)),
+    }));
   };
   const confirmFilterOptions = () => {
     closeModal();
     setFilterOptionsStore({
       readStatus: filterOptions.readStatus,
       hiddenStatus: filterOptions.hiddenStatus,
+      timeRange: filterOptions.timeRange,
     });
   };
   return (
@@ -56,18 +68,8 @@ const FilterModal = (props: any) => {
             <Radio.Button value={0}>隐藏</Radio.Button>
           </Radio.Group>
         </Form.Item>
-        <Form.Item label="Select">
-          <Select>
-            <Select.Option value="demo">Demo</Select.Option>
-          </Select>
-        </Form.Item>
         <Form.Item label="时间范围">
-          <DatePicker />
-        </Form.Item>
-        <Form.Item label="Button">
-          <Button type="primary" htmlType="submit">
-            确认
-          </Button>
+          <RangePicker showTime onChange={changeTimeRange} />
         </Form.Item>
       </Form>
     </Modal>

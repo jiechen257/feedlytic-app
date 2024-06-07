@@ -88,6 +88,7 @@ const ListView: React.FC = () => {
     const feeds = filterSourcesItems(originFeeds, {
       readStatus: filterOptions.readStatus,
       hiddenStatus: filterOptions.hiddenStatus,
+      timeRange: filterOptions.timeRange,
     });
     const tableData = feeds?.map((feed) => ({
       key: feed.id,
@@ -101,6 +102,7 @@ const ListView: React.FC = () => {
     getSource,
     filterOptions.hiddenStatus,
     filterOptions.readStatus,
+    filterOptions.timeRange,
   ]);
 
   const clickCurrentRow = (row) => {

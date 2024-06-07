@@ -12,7 +12,7 @@ import { Menu } from 'antd';
 import './index.less';
 import { useBoundStore } from '@/hooks/useBoundStore';
 import { useEffect, useState } from 'react';
-import { isValidUrl } from '@/utils/tool';
+import { isValidUrl } from '@/utils';
 import SourceModal from '../../../components/SourceModal';
 import { useMenuAction } from './useMenu';
 

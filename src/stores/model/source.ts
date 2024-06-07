@@ -1,4 +1,4 @@
-import { fetchFavicon, parseRSS } from '@/utils/tool';
+import { fetchFavicon, parseRSS } from '@/utils';
 import { FeedData } from '@extractus/feed-extractor';
 import { RSSItem } from './item';
 import { getStoreSource, setStoreSource } from '../electron-store';

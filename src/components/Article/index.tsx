@@ -15,7 +15,6 @@ const { Header, Content } = Layout;
 const Article = (props: any) => {
   const { feed } = props;
   const { id, link } = feed;
-  console.log('article---info---id, link', id, link);
 
   const [loading, setLoading] = useState<boolean>(false);
 

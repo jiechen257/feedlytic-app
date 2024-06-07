@@ -15,15 +15,16 @@ export const createSettingSlice: BoundStateCreator<SettingSlice> = (
   filterOptions: {
     readStatus: -1,
     hiddenStatus: -1,
+    timeRange: null,
   },
   setFilterOptions: (options) => {
-    const { readStatus, hiddenStatus } = options;
+    const { readStatus, hiddenStatus, timeRange } = options;
     set({
       filterOptions: {
         readStatus,
         hiddenStatus,
+        timeRange,
       },
     });
-    console.log('setFilterOptions', get().filterOptions);
   },
 });

@@ -1,4 +1,5 @@
 // @ts-ignore
+import { isArticleWithinTimeRange } from '@/utils/date';
 import type { FeedEntry } from '@extractus/feed-extractor';
 
 export class RSSItem {
@@ -46,6 +47,13 @@ export function filterSourcesItems(items: RSSItem[], filter: any) {
           return filter.readStatus === v.readStatus;
         case 'hiddenStatus':
           return filter.hiddenStatus === v.hiddenStatus;
+
+        case 'timeRange':
+          if (!filter.timeRange) {
+            return true;
+          }
+          // deter
+          return isArticleWithinTimeRange(v.date, filter.timeRange);
         default:
           return true;
       }
