@@ -48,7 +48,7 @@ export function insertSource(source: RSSSource) {
   return new Promise((resolve, reject) => {
     const sources = getStoreSource() || [];
     if (sources.length) {
-      const sids = Object.values(sources)?.map((s) => s.sid) || -1;
+      const sids = Object.values(sources)?.map((s: any) => s.sid) || -1;
       source.sid = Math.max(...sids, -1) + 1;
     } else {
       source.sid = 0;
@@ -82,7 +82,7 @@ export async function addSourceHelper(
   if (!sourceInit) {
     throw new Error('Source not initialized');
   }
-  const linkList = getStoreSource()?.map((v) => v.link) || [];
+  const linkList = getStoreSource()?.map((v: any) => v.link) || [];
   if (linkList.includes(url)) {
     throw new Error('Source already exists');
   }
@@ -92,6 +92,24 @@ export async function addSourceHelper(
       sources: [...get().sources, inserted],
     });
     setStoreSource(get().sources);
-    console.log('app.sources', get().sources);
+  }
+}
+
+export async function updateSourceHelper(
+  store: { set: Function; get: Function },
+  url: string,
+) {
+  const { set, get } = store;
+  const source = get().sources.find((s: any) => s.url === url);
+  if (source) {
+    const feed = (await RSSSource.fetchMetaData(source)) as FeedData;
+    source.items = feed.entries?.map((v) => new RSSItem(v)) || [];
+    source.unreadCount = feed.entries?.length;
+    source.iconUrl = (await fetchFavicon(source.url)) as any;
+    set({
+      sources: get().sources,
+    });
+    setStoreSource(get().sources);
+    console.log('updateSource---', source)
   }
 }

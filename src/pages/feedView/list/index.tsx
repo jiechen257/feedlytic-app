@@ -75,6 +75,7 @@ const ListView: React.FC = () => {
   const location = useLocation();
   const currentMenuKey = useBoundStore((s) => s.currentMenuKey);
   const getSource = useBoundStore((s) => s.getSource);
+  // const getCurrentSource = useBoundStore((s) => s.getCurrentSource);
   const filterOptions = useBoundStore((s) => s.filterOptions);
 
   const [feedsData, setFeedsData] = useState<DataType[]>([]);
@@ -85,6 +86,7 @@ const ListView: React.FC = () => {
 
   useEffect(() => {
     const originFeeds = getSource(currentMenuKey)?.items;
+    console.log('filterOptions--', filterOptions)
     const feeds = filterSourcesItems(originFeeds, {
       readStatus: filterOptions.readStatus,
       hiddenStatus: filterOptions.hiddenStatus,

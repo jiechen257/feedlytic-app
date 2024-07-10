@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Button, Flex, Segmented, Tabs, Tooltip } from 'antd';
-import type { TabsProps } from 'antd';
 import {
   SearchOutlined,
   SyncOutlined,
@@ -10,6 +9,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import FilterModal from '@/components/FilterModal';
 import useHeaderAction from './useHeader';
+import { HEADER_ACTION_TYPE } from './useHeader';
 
 const segmentedOptions = [
   {
@@ -51,12 +51,16 @@ const LayoutHeader = () => {
         <Tooltip title="filter">
           <Button
             shape="circle"
-            onClick={() => clickHeader('filter')}
+            onClick={() => clickHeader(HEADER_ACTION_TYPE.FILTER)}
             icon={<FilterOutlined />}
           />
         </Tooltip>
         <Tooltip title="refresh">
-          <Button shape="circle" icon={<SyncOutlined />} />
+          <Button
+            shape="circle"
+            onClick={() => clickHeader(HEADER_ACTION_TYPE.REFRESH)}
+            icon={<SyncOutlined />}
+          />
         </Tooltip>
         <Tooltip title="message">
           <Button shape="circle" icon={<MessageOutlined />} />

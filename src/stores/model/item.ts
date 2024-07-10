@@ -44,9 +44,9 @@ export function filterSourcesItems(items: RSSItem[], filter: any) {
     return Object.keys(filter).every((key) => {
       switch (key) {
         case 'readStatus':
-          return filter.readStatus === v.readStatus;
+          return filter.readStatus === undefined || filter.readStatus === v.readStatus;
         case 'hiddenStatus':
-          return filter.hiddenStatus === v.hiddenStatus;
+          return filter.hiddenStatus === undefined || filter.hiddenStatus === v.hiddenStatus;
 
         case 'timeRange':
           if (!filter.timeRange) {

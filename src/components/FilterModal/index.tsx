@@ -1,22 +1,39 @@
 import { useBoundStore } from '@/hooks/useBoundStore';
 import { Button, DatePicker, Form, Modal, Radio, Select } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const { RangePicker } = DatePicker;
 
 const FilterModal = (props: any) => {
   const { modalOpen, closeModal } = props;
+  const initFilterState = {
+    readStatus: -1,
+    hiddenStatus: -1,
+    timeRange: undefined,
+  };
   const [filterOptions, setFilterOptions] = useState<{
     readStatus: number;
     hiddenStatus: number;
     timeRange?: Date;
-  }>({
-    readStatus: -1,
-    hiddenStatus: -1,
-    timeRange: undefined,
-  });
+  }>(initFilterState);
 
+  const currentMenuKey = useBoundStore((s) => s.currentMenuKey);
   const setFilterOptionsStore = useBoundStore((s) => s.setFilterOptions);
+
+  useEffect(() => {
+    console.log('currentMenuKey', currentMenuKey);
+    setFilterOptions(initFilterState);
+  }, [currentMenuKey]);
+
+  useEffect(() => {
+    console.log('filterOptions', filterOptions);
+    setFilterOptionsStore({
+      readStatus: filterOptions.readStatus,
+      hiddenStatus: filterOptions.hiddenStatus,
+      timeRange: filterOptions.timeRange,
+    });
+  }, [filterOptions]);
+
   const changeFilters = (_, values) => {
     const { readStatus, hiddenStatus } = values;
     setFilterOptions((prevOptions) => ({

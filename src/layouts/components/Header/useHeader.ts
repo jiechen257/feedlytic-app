@@ -1,4 +1,14 @@
+import { useBoundStore } from '@/hooks/useBoundStore';
 import { useState } from 'react';
+
+export enum HEADER_ACTION_TYPE {
+  FILTER = 'filter',
+  REFRESH = 'refresh',
+}
+
+const refreshSource = () => {
+  const currentMenuKey = useBoundStore((s) => s.currentMenuKey);
+}
 
 const useHeaderAction = () => {
   const [filterOpen, setFilterOpen] = useState(false);
@@ -11,9 +21,11 @@ const useHeaderAction = () => {
 
   const clickHeader = (type: string) => {
     switch (type) {
-      case 'filter':
+      case HEADER_ACTION_TYPE.FILTER:
         openSourceModal();
         break;
+      case HEADER_ACTION_TYPE.REFRESH:
+
       default:
         break;
     }

@@ -1,5 +1,5 @@
 import type { BoundStateCreator } from '@/hooks/useBoundStore';
-import { addSourceHelper, type RSSSource } from './model/source';
+import { addSourceHelper, updateSourceHelper, type RSSSource } from './model/source';
 import { addMenuItemHelper, Menu } from './model/menu';
 import {
   getStoreMenu,
@@ -22,6 +22,8 @@ export type AppSlice = {
   initAppStore: () => void;
   addSource: (url: string, name: string) => void;
   clearAllData: () => void;
+  getCurrentSource: () => RSSSource;
+  updateSource: (url: string) => void;
 };
 
 export const createAppSlice: BoundStateCreator<AppSlice> = (
@@ -68,6 +70,9 @@ export const createAppSlice: BoundStateCreator<AppSlice> = (
       '',
     );
   },
+  updateSource: async (url: string) => {
+    await updateSourceHelper({ set, get }, url);
+  },
   clearAllData: async () => {
     set({
       menu: [],
@@ -85,4 +90,7 @@ export const createAppSlice: BoundStateCreator<AppSlice> = (
   setCurrentMenuKey: (key: string) => {
     set({ currentMenuKey: key });
   },
+  getCurrentSource: () => {
+    return get().sources?.find((s) => s.url === get().currentMenuKey) || [];
+  }
 });

@@ -8,7 +8,7 @@ import NotFound from '@/pages/ErrorMessage/404';
 const appRoutes = [
   {
     path: '/',
-    element: <Navigate to="/card" />,
+    element: <Navigate to="/list" />,
   },
   {
     path: '/404',
